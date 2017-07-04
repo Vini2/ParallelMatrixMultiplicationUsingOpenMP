@@ -85,7 +85,7 @@ double parallel_for_multiplication(int n){
 		
 	//start time from the wall clock
 	double startTime = omp_get_wtime();
-	int chunk = n/THREADS;
+	int chunks = n/THREADS;
 
 	#pragma omp parallel for schedule(dynamic, chunks) num_threads(THREADS)
 	for (int i = 0; i < n ; i++ ){
