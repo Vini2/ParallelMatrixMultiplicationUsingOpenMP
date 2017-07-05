@@ -23,11 +23,15 @@ double parallel_for_multiplication(int n);
 
 void step4_1();
 void step4_2();
+void step4_3(int n , int sampleSize);
 
 int main() {
 
 	//step4_1();
-	step4_2();
+	//step4_2();
+	
+	//run this method for each matrix size, with samplesSizes obtained from step4_2();
+	//step4_3( 200 , 100);
 
 
 	
@@ -110,6 +114,9 @@ double parallel_for_multiplication(int n){
 
 }
 
+/*
+This method will calculate the times taken to multiply matrices of different sizes
+*/
 void step4_1(){
 
 	for (int n = 200; n <= 2000; n=n+200){
@@ -125,6 +132,12 @@ void step4_1(){
 
 }
 
+
+/*
+This method will calculate the times taken to multiply matrices of different sizes 
+with predefined number of samples for each matrix size
+Outputs the required number of samples for accuracy 5% and confidence 95%
+*/
 void step4_2(){
 	
 	for (int n = 200; n <= 2000; n=n+200){
@@ -178,6 +191,42 @@ void step4_2(){
 	
 	}
 
+}
+
+/*
+This method will calculate the times taken to multiply matrices of different sizes 
+we need to specify the number of samples (as taken from method step4_2 and the matrix size.
+Outputs the avaerage time to multiply
+*/
+void step4_3(int n , int sampleSize){
+	
+	printf("Calculations for %d x %d matrix\n\n", n,n);
+
+		//for mean calcuations
+		double sum1 = 0;
+		double sum2 = 0;
+		
+		populate_matrix(n);
+
+		for (int i = 0; i < sampleSize; i++){
+
+			double serial = serial_multiplication(n);
+			double parallel = parallel_for_multiplication(n);
+			sum1 += serial;
+			sum2 += parallel;
+
+		}
+
+		double average1 = sum1/n;
+		double average2 = sum2/n;
+
+		printf ("Average time (mean) for Serial %d x %d with %d samples = %f\n\n" , n,n,sampleSize, average1);
+
+		
+		printf ("Average time (mean) for Parallel %d x %d with %d samples = %f\n\n" , n,n,sampleSize, average2);
+		
+		printf("------------------------------\n");
+	
 }
 
 
