@@ -139,18 +139,22 @@ with predefined number of samples for each matrix size
 Outputs the required number of samples for accuracy 5% and confidence 95%
 */
 void step4_2(){
-	
-	for (int n = 200; n <= 2000; n=n+200){
-		
-		printf("Calculations for %d x %d matrix\n\n", n,n);
+
+	for (int n = 200; n <= 2000; n = n + 200){
+
+		printf("Calculations for %d x %d matrix\n\n", n, n);
 
 		//for mean calcuations
-		double sum1 = 0;
-		double sum2 = 0;
-		
+		double sum_serial = 0;
+		double sum_parallel = 0;
+
 		//for standard deviation calculation
-		double ssum1 = 0;
-		double ssum2 = 0;
+		double sum_of_squares_serial = 0;
+		double sum_of_squares_parallel = 0;
+
+		//to record time taken for each sample
+		double sample_times_serial[SAMPLES];
+		double sample_times_parallel[SAMPLES];
 
 		populate_matrix(n);
 
@@ -158,20 +162,25 @@ void step4_2(){
 
 			double serial = serial_multiplication(n);
 			double parallel = parallel_for_multiplication(n);
-			sum1 += serial;
-			sum2 += parallel;
-			
-			ssum1 += pow(serial , 2);
-			ssum2 += pow(parallel, 2);
 
+			sample_times_serial[i] = serial;
+			sample_times_parallel[i] = parallel;
+
+			sum_serial += serial;
+			sum_parallel += parallel;
 
 		}
 
-		double average1 = sum1/n;
-		double average2 = sum2/n;
-		
-		double sd1 = sqrt ( (ssum1/n) - pow(average1,2)); 
-		double sd2 = sqrt ( (ssum2/n) - pow(average2,2)); 
+		double average1 = sum_serial / SAMPLES;
+		double average2 = sum_parallel / SAMPLES;
+
+		for (int itr = 0; itr < SAMPLES; itr++) {
+			sum_of_squares_serial += pow((average1 - sample_times_serial[itr]), 2);
+			sum_of_squares_parallel += pow((average2 - sample_times_parallel[itr]), 2);
+		}
+
+		double sd1 = sqrt(sum_of_squares_serial / (SAMPLES - 1));
+		double sd2 = sqrt(sum_of_squares_parallel / (SAMPLES - 1));
 
 		printf ("Average time (mean) for Serial %d x %d with %d samples = %f\n" , n,n,SAMPLES, average1);
 		printf ("SD time (sd) for Serial %d x %d with %d samples = %f\n\n" , n,n,SAMPLES, sd1);
