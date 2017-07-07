@@ -34,14 +34,14 @@ int main() {
 	char method;
 
 	//Enter method
-	printf("Enter one of the options given below\n \ts - for serial program \n\tp - for parallel program \n\to - for optimized program\n");
-	scanf("%c", &method);
+	//printf("Enter one of the options given below\n \ts - for serial program \n\tp - for parallel program \n\to - for optimized program\n");
+	//scanf("%c", &method);
 
 	//Enter sample size
 	printf("Enter sample size: ");
 	scanf("%d", &SAMPLES);
 
-	switch (method) {
+/*	switch (method) {
 		case 's':
 			step4_1();
 			break;
@@ -54,8 +54,11 @@ int main() {
 			step8();
 			break;
 			
-	}
-
+	}*/
+	
+	step8();
+	step4_2();
+	step4_1();
 	return 0;
 
 
