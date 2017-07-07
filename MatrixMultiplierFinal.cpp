@@ -6,11 +6,11 @@
 #include <omp.h>
 #include <math.h>
 
-#define THREADS 16
+#define THREADS 20
 
 using namespace std;
 
-int SAMPLES = 100;
+int SAMPLES = 1;
 
 //MatrixA and MatrixB will  be the input Matrices - maximum size 2000
 double matrixA[2000][2000];
@@ -119,31 +119,31 @@ double serial_multiplication(int n){
 This method will do parallel for loop multiplication
 */
 double parallel_for_multiplication(int n){
-
-	int chunks = n / THREADS;
-	double sum;
-	int i, j, k;
-
+		
 	//start time from the wall clock
 	double startTime = omp_get_wtime();
+	int chunks = n/THREADS;
 
-#pragma omp parallel for shared(matrixA,  matrixB, matrixC) schedule(static) num_threads(THREADS)
-	for (i = 0; i < n; i++){
-		for (j = 0; j < n; j++){
-			sum = 0;
-			for (k = 0; k < n; k++){
-				sum += matrixA[i][k] * matrixB[k][j];
+	#pragma omp parallel for shared(matrixA,  matrixB, matrixC) schedule(static) num_threads(THREADS)
+	for (int i = 0; i < n ; i++ ){
+		
+		for (int j = 0; j < n ; j++ ){
+			double sum = 0;
+			for (int k = 0; k < n ; k++ ){
+				sum = sum + matrixA[i][k]*matrixB[k][j];
+				
 			}
 			matrixC[i][j] = sum;
 			//printf("%f\n" , sum);
-
+		
 		}
+		
 	}
 
 	//get the end time
 	double endTime = omp_get_wtime();
 
-	return (endTime - startTime);
+	return endTime - startTime;
 
 }
 
@@ -164,7 +164,7 @@ double parallel_for_multiplication_optimized(int n){
 	//divide the matrix in to blocks and calculate
 	//use block algorithms
 	
-#pragma omp parallel for shared(matrixA,  matrixB, matrixC) private(i, j, k, sum) schedule(static) num_threads(THREADS)
+	#pragma omp parallel for shared(matrixA,  matrixB, matrixC) private(i, j, k, sum) schedule(static) num_threads(THREADS)
 	for (i0 = 0; i0 < n; i0 += block_size){
 		for (j0 = 0; j0 < n; j0 += block_size){
 			for (k0 = 0; k0 < n; k0 += block_size){

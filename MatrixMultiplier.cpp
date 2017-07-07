@@ -5,7 +5,7 @@
 #include <omp.h>
 #include <math.h>
 
-#define THREADS 4
+#define THREADS 20
 #define SAMPLES 100
 
 using namespace std;
@@ -27,7 +27,7 @@ void step4_3(int n , int sampleSize);
 
 int main() {
 
-	//step4_1();
+	step4_1();
 	//step4_2();
 	
 	//run this method for each matrix size, with samplesSizes obtained from step4_2();
@@ -92,7 +92,7 @@ double parallel_for_multiplication(int n){
 	double startTime = omp_get_wtime();
 	int chunks = n/THREADS;
 
-	#pragma omp parallel for schedule(dynamic, chunks) num_threads(THREADS)
+	#pragma omp parallel for shared(matrixA,  matrixB, matrixC) schedule(static) num_threads(THREADS)
 	for (int i = 0; i < n ; i++ ){
 		
 		for (int j = 0; j < n ; j++ ){
@@ -105,6 +105,7 @@ double parallel_for_multiplication(int n){
 			//printf("%f\n" , sum);
 		
 		}
+		
 	}
 
 	//get the end time
