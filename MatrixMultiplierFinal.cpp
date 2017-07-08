@@ -10,6 +10,7 @@
 
 using namespace std;
 
+//default sample size is 1, unless the user specifies a value
 int SAMPLES = 1;
 
 //MatrixA and MatrixB will  be the input Matrices - maximum size 2000
@@ -19,29 +20,34 @@ double matrixB[2000][2000];
 //this matrix will be the multiplication of Matrix A and B
 double matrixC[2000][2000];
 
+//method header initialization
 int min(int a, int b);
 void populate_matrix(int n);
 double serial_multiplication(int n);
 double parallel_for_multiplication(int n);
 double parallel_for_multiplication_optimized(int n);
 
+//these methods will run the tasks according to the given excersice "Lab 3 and 4.pdf"
 void step4_1();
 void step4_2();
 void step8();
 
+/*
+This is the main method of the program
+*/
 int main() {
 
 	char method;
 
-	//Enter method
-	//printf("Enter one of the options given below\n \ts - for serial program \n\tp - for parallel program \n\to - for optimized program\n");
-	//scanf("%c", &method);
+	//Enter method that needs to be run
+	printf("Enter one of the options given below\n \ts - for serial program \n\tp - for parallel program \n\to - for optimized program\n");
+	scanf("%c", &method);
 
-	//Enter sample size
+	//Enter sample size for the above selected method
 	printf("Enter sample size: ");
 	scanf("%d", &SAMPLES);
 
-/*	switch (method) {
+	switch (method) {
 		case 's':
 			step4_1();
 			break;
@@ -54,18 +60,15 @@ int main() {
 			step8();
 			break;
 			
-	}*/
+	}
 	
-	//step8();
-	//step4_2();
-	step4_1();
 	return 0;
 
 
 }
 
 /*
-This method will preturn the minimum out of two numbers
+This method will preturn the minimum out of two numbers (integers)
 */
 int min(int a, int b){
 	return a < b ? a : b;
@@ -95,6 +98,7 @@ This methid will do serial multiplication
 */
 double serial_multiplication(int n){
 
+	//required variable initilization
 	int i, j, k;
 	double sum;
 
@@ -108,13 +112,13 @@ double serial_multiplication(int n){
 				sum = sum + matrixA[i][k] * matrixB[k][j];
 			}
 			matrixC[i][j] = sum;
-			//printf("%f\n" , sum);
 		}
 	}
 
-	//get the end time
+	//get the end time from the wall clock
 	double endTime = omp_get_wtime();
 
+	//return the execution time
 	return endTime - startTime;
 }
 
@@ -125,8 +129,8 @@ double parallel_for_multiplication(int n){
 		
 	//start time from the wall clock
 	double startTime = omp_get_wtime();
-	int chunks = n/THREADS;
 
+	//for loop spefication with shared, private variables and number of threads
 	#pragma omp parallel for shared(matrixA,  matrixB, matrixC) schedule(static) num_threads(THREADS)
 	for (int i = 0; i < n ; i++ ){
 		
@@ -137,15 +141,15 @@ double parallel_for_multiplication(int n){
 				
 			}
 			matrixC[i][j] = sum;
-			//printf("%f\n" , sum);
 		
 		}
 		
 	}
 
-	//get the end time
+	//get the end time from wall clock
 	double endTime = omp_get_wtime();
 
+	//return the execution time
 	return endTime - startTime;
 
 }
@@ -184,9 +188,10 @@ double parallel_for_multiplication_optimized(int n){
 		}
 	}
 
-	//get the end time
+	//get the end time from wall clock
 	double endTime = omp_get_wtime();
 
+	//return the execution time
 	return (endTime - startTime);
 
 }
@@ -205,7 +210,6 @@ void step4_1(){
 		for (int i = 0; i < SAMPLES; i++){
 
 			populate_matrix(n);
-
 			sum += serial_multiplication(n);
 
 		}
@@ -233,7 +237,6 @@ void step4_2(){
 		for (int i = 0; i < SAMPLES; i++){
 
 			populate_matrix(n);
-
 			sum += parallel_for_multiplication(n);
 
 		}
@@ -261,7 +264,6 @@ void step8(){
 		for (int i = 0; i < SAMPLES; i++){
 
 			populate_matrix(n);
-
 			sum += parallel_for_multiplication_optimized(n);
 
 		}
