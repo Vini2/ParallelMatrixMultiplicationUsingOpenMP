@@ -14,26 +14,26 @@ This repository contains 4 important files
 3)	Lab 3 and 4.pdf				-	Includes details about this program. Lab details
 4)	Concurrent Programming Lab3 4 - Graphs.xlsx 	-	Excel Sheet containing values related to execution and speedup (includes graphs)
 
-Instruction to Compile and Execute this program
+##Instruction to Compile and Execute this program
 
-Step 1:
+###Step 1:
 
 Open the command prompt or the terminal in the project folder. Windows users, make sure to have a C/C++ compiler like MinGW or TDM-GCC installed in the machine, and proper environment variables set.
 
-Step 2:
+###Step 2:
 
 Run the following command in the terminal/ command prompt to compile the program (The compiled program executable is provided in the same folder as "MatrixMultiplierFinal.exe".).Make sure to link the openmp library by the comman "-fopenmp".
 
-g++ MatrixMultiplierFinal.cpp -o MatrixMultiplierFinal -fopenmp
+```g++ MatrixMultiplierFinal.cpp -o MatrixMultiplierFinal -fopenmp```
 
-Step 3:
+###Step 3:
 
 Now, an executable file named "MatrixMultiplierFinal.exe" is created in the folder. Double click and open it. (Windows users). Or type MatrixMultiplierFinal.exe in the command prompt.
 
 Linux users can use the terminal to run the executable file. By running the following command in the terminl
 ./MatrixMultiplierFinal
 
-Step 4:
+###Step 4:
 
 Insert a letter according to you need. And then enter the sample size required. The letter representation is given below
 
