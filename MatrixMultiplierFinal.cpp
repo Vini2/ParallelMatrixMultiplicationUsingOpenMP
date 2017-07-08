@@ -56,8 +56,8 @@ int main() {
 			
 	}*/
 	
-	step8();
-	step4_2();
+	//step8();
+	//step4_2();
 	step4_1();
 	return 0;
 
