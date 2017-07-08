@@ -28,14 +28,16 @@ g++ MatrixMultiplierFinal.cpp -o MatrixMultiplierFinal -fopenmp
 
 Step 3:
 
-Now, an executable file named "MatrixMultiplierFinal.exe" is created in the folder. Double click and open it. (Windows users).
-Linux users can use the terminal to run the executable file.
+Now, an executable file named "MatrixMultiplierFinal.exe" is created in the folder. Double click and open it. (Windows users). Or type MatrixMultiplierFinal.exe in the command prompt.
+
+Linux users can use the terminal to run the executable file. By running the following command in the terminl
+./MatrixMultiplierFinal
 
 Step 4:
 
 Insert a letter according to you need. And then enter the sample size required. The letter representation is given below
 
-s - serial
-p - parallel
-o - optimized
+1) s - serial
+2) p - parallel
+3) o - optimized
 
