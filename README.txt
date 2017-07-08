@@ -2,7 +2,7 @@
 Parallel Matrix Multiplication Using OpenMP
 -------------------------------------------
 
-This project focuses on how to use ‚Äúparallel for‚Äù and optimize a matrix-matrix multiplication to gain better performance. C++ and OpenMP library will be used.
+This project focuses on how to use ìparallel forî and optimize a matrix-matrix multiplication to gain better performance. C++ and OpenMP library will be used.
 
 This program contains three main components.
     1. Serial Matrix-Matrix Multiplication
@@ -21,18 +21,27 @@ Open the command prompt or the terminal in the project folder. Windows users, ma
 
 Step 2:
 
-Run the following command in the terminal/ command prompt to compile the program (The compiled program executable is provided in the same folder as "MatrixMultiplierFinal.exe".). Make sure to link the openmp library by the command "-fopenmp".
+Run the following command in the terminal/ command prompt to compile the program. Make sure to link the openmp library by the command "- fopenmp".
+
 g++ MatrixMultiplierFinal.cpp -o MatrixMultiplierFinal -fopenmp
 
 
 Step 3:
 
-Now, an executable file named "MatrixMultiplierFinal.exe" is created in the folder. Double click and open it. (Windows users). Or type MatrixMultiplierFinal.exe in the command prompt.
-Linux users can use the terminal to run the executable file. By running the following command in the terminl ./MatrixMultiplierFinal
+Windws Users : Now, an executable file named "MatrixMultiplierFinal.exe" is created in the folder. Double click and open it Or type MatrixMultiplierFinal.exe in the command prompt.
+
+Linux Users : Use the terminal to run the executable file. By running the following command in the terminal ./MatrixMultiplierFinal
 
 
 Step 4:
-Insert a letter according to you need. And then enter the sample size required. The letter representation is given below
+
+Insert a letter according to your need. And then enter the sample size required. The letter representation is given below.
     s - serial
     p - parallel
     o - optimized
+
+Eg:
+First Enter "s" or "p" or "o"
+Second Enter the sample size "200"
+
+Program will run and print necessary details accordingly.
