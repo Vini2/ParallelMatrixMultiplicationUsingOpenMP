@@ -35,7 +35,7 @@ Step 4:
 
 Insert a letter according to you need. And then enter the sample size required. The letter representation is given below
 
-s - serial
-p - parallel
-o - optimized
+1) s - serial
+2) p - parallel
+3) o - optimized
 
