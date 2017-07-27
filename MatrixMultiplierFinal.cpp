@@ -16,12 +16,15 @@ int SAMPLES = 1;
 //MatrixA and MatrixB will  be the input Matrices - maximum size 2000
 double matrixA[2000][2000];
 double matrixB[2000][2000];
+double transposeB[2000][2000];
+
 
 //this matrix will be the multiplication of Matrix A and B
 double matrixC[2000][2000];
 
 //method header initialization
 int min(int a, int b);
+void transpose(int n);
 void populate_matrix(int n);
 double serial_multiplication(int n);
 double parallel_for_multiplication(int n);
@@ -68,11 +71,24 @@ int main() {
 }
 
 /*
-This method will preturn the minimum out of two numbers (integers)
+This method will return the minimum out of two numbers (integers)
 */
 int min(int a, int b){
 	return a < b ? a : b;
 }
+
+/*
+This method will get the transpose of matrixB
+*/
+void transpose(int n) {
+    int i,j;
+    for(i=0; i<n; i++) {
+        for(j=0; j<n; j++) {
+            transposeB[i][j] = matrixB[j][i];
+        }
+    }
+}
+
 
 /*
 This method will populate the matrix with random numbers
@@ -100,18 +116,16 @@ double serial_multiplication(int n){
 
 	//required variable initilization
 	int i, j, k;
-	double sum;
 
 	//start time from the wall clock
 	double startTime = omp_get_wtime();
 
 	for (i = 0; i < n; i++){
 		for (j = 0; j < n; j++){
-			sum = 0;
+			matrixC[i][j] = 0;
 			for (k = 0; k < n; k++){
-				sum = sum + matrixA[i][k] * matrixB[k][j];
+				matrixC[i][j] = matrixC[i][j] + matrixA[i][k] * matrixB[k][j];
 			}
-			matrixC[i][j] = sum;
 		}
 	}
 
@@ -135,12 +149,11 @@ double parallel_for_multiplication(int n){
 	for (int i = 0; i < n ; i++ ){
 		
 		for (int j = 0; j < n ; j++ ){
-			double sum = 0;
+			matrixC[i][j] = 0;
 			for (int k = 0; k < n ; k++ ){
-				sum = sum + matrixA[i][k]*matrixB[k][j];
+				matrixC[i][j] = matrixC[i][j] + matrixA[i][k]*matrixB[k][j];
 				
 			}
-			matrixC[i][j] = sum;
 		
 		}
 		
@@ -160,33 +173,28 @@ This method will do parallel for loop multiplication with optimization using blo
 */
 double parallel_for_multiplication_optimized(int n){
 
-	int block_size = n / THREADS;
-	int i, j, k, i0, j0, k0;
-	double sum;
-	int chunks = n / THREADS;
+	int i, j, k;
+
+	//get the transpose of matrixB
+        transpose(n);
 
 	//start time from the wall clock
 	double startTime = omp_get_wtime();
 
-	//divide the matrix in to blocks and calculate
-	//use block algorithms
+	//calculate using transpose
 	
-	#pragma omp parallel for shared(matrixA,  matrixB, matrixC) private(i, j, k, sum) schedule(static) num_threads(THREADS)
-	for (i0 = 0; i0 < n; i0 += block_size){
-		for (j0 = 0; j0 < n; j0 += block_size){
-			for (k0 = 0; k0 < n; k0 += block_size){
-				for (i = i0; i < min(i0 + block_size, n); i++){
-					for (j = j0; j < min(j0 + block_size, n); j++){
-						sum = 0;
-						for (k = k0; k < min(k0 + block_size, n); k++){
-							sum += matrixA[i][k] * matrixB[k][j];
-						}
-						matrixC[i][j] += sum;
-					}
-				}
-			}
+	#pragma omp parallel for shared(matrixA, matrixB, matrixC) private(i, j, k) schedule(static) num_threads(THREADS)
+	for (i = 0; i < n; i++){
+		for (j = 0; j < n; j++){
+			double sum = 0;
+			for (k = 0; k < n; k++){
+				sum += matrixA[i][k] * transposeB[j][k];
+			}		
+			matrixC[i][j] = sum;
 		}
+		
 	}
+
 
 	//get the end time from wall clock
 	double endTime = omp_get_wtime();
